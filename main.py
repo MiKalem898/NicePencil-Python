@@ -5,12 +5,14 @@ from classes.Dates_converter import Dates_converter
 from classes.Lorem_generator import LoremGenerator
 from classes.Emoji_converter import EmojiConverter
 from classes.Unities_converter import UnitiesConverter
+from classes.Binary_converter import BinaryConverter
+from classes.Color_converter import ColorConverter
 
 screen = CTk()
 screen.minsize(width=900, height=500)
 screen.maxsize(width=900, height=500)
-screen.title('Utilities')
-screen.iconbitmap('outils.ico')
+screen.title('Nice Pencil - utilities')
+screen.iconbitmap('assets/nice-pencil-logo.ico')
 
 set_appearance_mode('dark')
 set_default_color_theme('green')
@@ -28,6 +30,8 @@ def change_mode(new_mode, button):
     global emoji_converter
     global markdown_previewer
     global unities_converter
+    global binary_converter
+    global color_converter
 
     for btn in buttons:
         btn.configure(fg_color='#11B384', text_color='gray90')
@@ -55,6 +59,12 @@ def change_mode(new_mode, button):
     elif mode == 'unities-converter':
         unities_converter = UnitiesConverter(canvas)
 
+    elif mode == 'binary-converter':
+        binary_converter = BinaryConverter(canvas)
+
+    elif mode == 'color-converter':
+        color_converter = ColorConverter(canvas)
+
     result_label = CTkLabel(text='Resulat', text_color='#fff')
     canvas.create_window(200, 270, window=result_label)
 
@@ -64,7 +74,7 @@ def change_mode(new_mode, button):
     valid_button = CTkButton(text='Valider', command=valid)
     canvas.create_window(200, 370, window=valid_button)
 
-    if mode == 'lorem-generator' or mode == 'markdown-previewer':
+    if mode == 'lorem-generator' or mode == 'binary-converter':
         result_input.destroy()
         result_label.destroy()
 
@@ -96,7 +106,13 @@ def valid():
     elif mode == 'unities-converter':
         result = unities_converter.valid()
 
-    if mode == 'lorem-generator':
+    elif mode == 'binary-converter':
+        result = binary_converter.valid()
+
+    elif mode == 'color-converter':
+        result = color_converter.valid()
+
+    if mode == 'lorem-generator' or mode == 'binary-converter':
         result_input.destroy()
 
         result_input = CTkTextbox(width=300, height=100, bg_color='gray12')
@@ -127,8 +143,14 @@ menu.create_window(112, 150, window=menu_button4)
 menu_button5 = CTkButton(text="Convertisseur de \n texte et caracteres speciaux", bg_color='#fff', command=lambda: change_mode('emoji-converter', menu_button5))
 menu.create_window(112, 195, window=menu_button5)
 
-menu_button6 = CTkButton(text="Converrtisseur d'unités", bg_color='#fff', command=lambda: change_mode('unities-converter', menu_button6))
+menu_button6 = CTkButton(text="Convertisseur d'unités", bg_color='#fff', command=lambda: change_mode('unities-converter', menu_button6))
 menu.create_window(112, 240, window=menu_button6)
+
+menu_button7 = CTkButton(text="Convertisseur binaire", bg_color='#fff', command=lambda: change_mode('binary-converter', menu_button7))
+menu.create_window(112, 280, window=menu_button7)
+
+menu_button8 = CTkButton(text="Convertisseur de \n code couleur", bg_color='#fff', command=lambda: change_mode('color-converter', menu_button8))
+menu.create_window(112, 325, window=menu_button8)
 
 #---------------
 
@@ -146,6 +168,6 @@ canvas.create_window(200, 310, window=result_input)
 valid_button = CTkButton(text='Valider', command=valid)
 canvas.create_window(200, 370, window=valid_button)
 
-buttons = (menu_button1, menu_button2, menu_button3, menu_button4, menu_button5, menu_button6)
+buttons = (menu_button1, menu_button2, menu_button3, menu_button4, menu_button5, menu_button6, menu_button7, menu_button8)
 
 screen.mainloop()
